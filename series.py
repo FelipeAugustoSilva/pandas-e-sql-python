@@ -53,4 +53,10 @@ print(ser1[['Alemanha', 'Japão']])# Vai imprimir:
 #Alemanha    2
 #Japão       4
 
-print(ser1 + ser2)
+print(ser1 + ser2)# Vai imprimir:
+#Alemanha    4.0
+#EUA         2.0
+#Italia      NaN
+#Japão       8.0
+#USSR        NaN
+#dtype: float64

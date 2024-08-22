@@ -71,3 +71,8 @@ print(df.loc['A'])#vai retornar toda a linha 'A' como Series # Vai imprimir:
 
 print(df.iloc[0,2])#vai retornar toda o valor da linha 'A' como Series, coluna 'Y':
 #-0.32348773618871807
+
+print(df.loc[['A', 'B'], 'W']) # vai imprimir os valores da linha A e B na coluna W: 
+#A    0.843492
+#B   -0.367777
+#Name: W, dtype: float64

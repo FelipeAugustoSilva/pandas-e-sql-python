@@ -72,7 +72,77 @@ print(df.loc['A'])#vai retornar toda a linha 'A' como Series # Vai imprimir:
 print(df.iloc[0,2])#vai retornar toda o valor da linha 'A' como Series, coluna 'Y':
 #-0.32348773618871807
 
-print(df.loc[['A', 'B'], 'W']) # vai imprimir os valores da linha A e B na coluna W: 
+#print(df.loc[['A', 'B'], ['W']]) # vai imprimir os valores da linha A e B na coluna W, como Dataframe: 
+print(df.loc[['A', 'B'], 'W']) # vai imprimir os valores da linha A e B na coluna W, como Series: 
 #A    0.843492
 #B   -0.367777
 #Name: W, dtype: float64
+
+print(df.iloc[:-1, :])#vai retornar todas as colunas, excluindo a ultima linha como Series:
+#          W         X         Y         Z       NEW
+#A  0.303040  0.332996 -1.612914 -1.011123 -1.309874
+#B -0.258055  2.159360  0.329679  0.431682  0.071624
+#C -1.057510  0.615583 -1.468038 -1.172364 -2.525548
+#D  1.801869  1.154607 -1.148270  0.083246  0.653599
+#E -1.535369  1.454470 -0.005140  2.153959 -1.540509
+
+print(df.iloc[:-1, 1:])#vai retornar apartir da coluna 1 a ultima e excluindo a ultima linha como Series:
+#       X         Y         Z       NEW
+#A  0.332996 -1.612914 -1.011123 -1.309874
+#B  2.159360  0.329679  0.431682  0.071624
+#C  0.615583 -1.468038 -1.172364 -2.525548
+#D  1.154607 -1.148270  0.083246  0.653599
+#E  1.454470 -0.005140  2.153959 -1.540509
+
+
+print(df.iloc[1:4, 1:3]) #Vai ser impresso:
+#          X         Y
+#B -0.546269  0.258595
+#C -0.039808 -1.156967
+#D  0.450051  0.220546
+
+print(df > 0)#Vai ser impresso:
+ #      W      X      Y      Z    NEW
+#A   True   True  False   True   True
+#B  False   True   True  False  False
+#C   True   True  False   True  False
+#D  False  False  False   True  False
+#E   True  False   True  False   True
+#F  False  False  False  False  False
+
+print([df > 0])#Vai ser impresso:
+#[       W      X      Y      Z    NEW
+#A  False   True   True   True   True
+#B  False   True   True  False  False
+#C  False  False   True   True  False
+#D   True  False  False  False  False
+#E   True  False   True  False   True
+#F   True  False  False   True  False]
+
+print(df[df > 0])#Vai ser impresso:
+#A  0.213293  1.105936       NaN  0.830952       NaN
+#B  0.129649  0.109985  0.790409       NaN  0.920058
+#C  2.257206       NaN       NaN       NaN  1.469450
+#D  0.147148       NaN  0.567944       NaN  0.715092
+#E  0.421644       NaN  0.427295  0.450284  0.848939
+#F  0.806169       NaN  0.599802       NaN  1.405971
+
+print(df['Y'] > 0)#Vai ser impresso:
+#A    False
+#B    False
+#C    False
+#D     True
+#E     True
+#F     True
+#Name: Y, dtype: bool
+
+print(df[df['Y'] > 0])#Vai ser impresso:
+#          W         X         Y         Z       NEW
+#A -0.148982 -0.970510  0.640662 -0.380043  0.491680
+#B  1.712953 -0.456111  1.511011 -0.643244  3.223965
+#E -0.639533  0.148702  0.265175 -0.869425 -0.374358
+
+print(df[(df['Y'] > 0) & (df['W'] > 0)])#Vai ser impresso:
+#          W         X         Y         Z       NEW
+#A  0.794655  0.246239  0.576488 -0.063305  1.371143
+#D  0.058178  2.110317  1.766410  0.367221  1.824588

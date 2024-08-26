@@ -1,4 +1,5 @@
 from numpy.random import randn
+import numpy as np
 import pandas as pd
 
 df = pd.DataFrame(randn(6,4), index=["A", "B", "C", "D", "E","F"], columns="W X Y Z".split())
@@ -213,3 +214,61 @@ print(df.reset_index().set_index("novo_index")) #vai ser impresso:
 #OR             D  1.703278 -2.108511 -1.335699 -1.105491  0.367579
 #CO             E -0.334299  1.851096 -0.188787 -0.430120 -0.523086
 #TX             F -1.090490  0.906270  1.651790  1.125886  0.561301
+
+
+outside = ['G1', 'G1', 'G1', 'G2', 'G2', 'G2']
+inside = [1, 2, 3, 1, 2, 3]
+hier_index = list(zip(outside,inside))
+print(hier_index) #Vai ser impresso uma tupla:
+#[('G1', 1), ('G1', 2), ('G1', 3), ('G2', 1), ('G2', 2), ('G2', 3)]
+
+hier_index = pd.MultiIndex.from_tuples(hier_index)
+print(hier_index) #Vai ser impresso:
+#MultiIndex([('G1', 1),
+#            ('G1', 2),
+#           ('G1', 3),
+#           ('G2', 1),
+#            ('G2', 2),
+#            ('G2', 3)],
+#           )
+
+dff = pd.DataFrame(np.random.randn(6,2),index=hier_index, columns=['A', 'B'])
+print(dff)#Vai ser impresso o dataframe assim:
+#             A         B
+#G1 1  0.320152  1.488853
+#   2 -0.324630  1.279359
+#   3 -0.993763 -2.207344
+#G2 1 -0.397826 -0.778301
+#   2 -0.899567 -1.159682
+#   3 -0.011167  0.546462
+
+dff.index.names = ['Grupo', 'Numero']
+print(dff)#Vai ser impresso  assim:
+#                     A         B
+#Grupo Numero
+#G1    1      -0.066932 -1.413828
+#      2      -1.271939  0.881977
+#      3      -0.334779  0.058210
+#G2    1       1.158361  0.670691
+#      2      -2.142515 -0.376607
+#      3       0.461618  1.917577
+
+
+
+print(dff.loc["G1"])#Vai ser impresso o dataframe assim:
+#          A         B
+#1 -0.482768  1.484198
+#2  0.114278 -1.226552
+#3 -0.158794 -0.650002
+
+print(dff.loc["G1"].loc[1])#Vai ser impresso assim:
+#A   -0.201618
+#B   -0.246084
+#Name: 1, dtype: float64
+
+
+print(dff.xs(1, level='Numero'))#Vai ser impresso  assim:
+#              A         B
+#Grupo
+#G1     1.887206  0.371498
+#G2     1.307078 -0.199035

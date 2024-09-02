@@ -272,3 +272,37 @@ print(dff.xs(1, level='Numero'))#Vai ser impresso  assim:
 #Grupo
 #G1     1.887206  0.371498
 #G2     1.307078 -0.199035
+
+
+dfff = pd.DataFrame({'A': [1,2,np.nan],
+                    'B': [5,np.nan,np.nan],
+                    'C': [1,2,3]})
+
+print(dfff) #vai ser impresso: 
+#     A    B  C
+#0  1.0  5.0  1
+#1  2.0  NaN  2
+#2  NaN  NaN  3
+
+#print(dfff.dropna(axis=0))
+print(dfff.dropna())# vai ser excluido as linhas que possuam valores em NaN:
+#     A    B  C
+#0  1.0  5.0  1
+
+print(dfff.dropna(axis=1))# vai ser excluido as colunas que possuam valores iguais a NaN:
+#   C
+#0  1
+#1  2
+#2  3
+
+print(dfff.dropna(axis=1, thresh=2))# Vai escluir apenas as colunas com 2 ou mais valores com NaN:
+ #    A  C
+#0  1.0  1
+#1  2.0  2
+#2  NaN  3
+
+print(dfff.fillna(0)) # os valores em NaN seram substituidos por 0, podendo usar até strings:
+#     A    B  C
+#0  1.0  5.0  1
+#1  2.0  0.0  2
+#2  0.0  0.0  3

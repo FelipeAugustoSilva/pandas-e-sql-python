@@ -31,4 +31,34 @@ conn.commit() # comitou
 
 
 df_date2 = df_data.iloc[::-2] # df_date2 vai receber o valor de df_data, bagunçada e de tras para frente e vai ser selecionado os valores de 2 em 2
-df_date2.to_sql('data', conn, if_exists='append')
+df_date2.to_sql('data', conn, if_exists='append') # inserir o valor do df_date2 na tabela data como append que insere no final da tabela
+
+
+
+
+
+# SELECT
+c.execute("SELECT * FROM data")
+c.fetchone() # retorna apenas a primeira linha da tabela
+c.fetchall() # Ele retorna cada linha da lista como uma tupla
+
+
+
+c.execute("SELECT * FROM data WHERE A > 200") # filtrei a tabela data, para retornar apenas valores acima de 200
+df = pd.DataFrame(c.fetchall()) # Criei um dataframe dessa tabela data, com valores acima de 200
+
+
+
+query = "SELECT * FROM data"
+df = pd.read_sql(query, con=conn, index_col='index_name')
+
+
+
+# UPDATE e DELETE
+c.execute("UPDATE data SET A=218 WHERE index_name='b'")
+conn.commit()
+
+c.execute("UPDATE data SET A=277, B=277 WHERE index_name='b'")
+conn.commit()
+
+

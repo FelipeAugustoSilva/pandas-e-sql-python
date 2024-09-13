@@ -61,4 +61,7 @@ conn.commit()
 c.execute("UPDATE data SET A=277, B=277 WHERE index_name='b'")
 conn.commit()
 
+c.execute("DELETE FROM data WHERE index_name='1'")
+conn.commit()
+
 

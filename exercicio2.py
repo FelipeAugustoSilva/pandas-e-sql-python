@@ -98,3 +98,110 @@ df_filtro2 = df_mes_ano[df_mes_ano['PREÇO MÉDIO REVENDA'] > 5][['ESTADO', 'ANO
 #120796                ACRE  2021-04                5.209
 
 #[24304 rows x 3 columns]     07:38
+
+df_filtro2 = df_mes_ano[df_mes_ano['PREÇO MÉDIO REVENDA'] > 5][['ESTADO', 'ANO-MES', 'PREÇO MÉDIO REVENDA']].head(20)
+#print(df_filtro2)
+#                    ESTADO  ANO-MES  PREÇO MÉDIO REVENDA
+#24132     DISTRITO FEDERAL  2004-05               33.989
+#24133                GOIAS  2004-05               30.335
+#24134          MATO GROSSO  2004-05               38.568
+#24135   MATO GROSSO DO SUL  2004-05               33.388
+#24136              ALAGOAS  2004-05               32.391
+#24137                BAHIA  2004-05               32.856
+#24138                CEARA  2004-05               32.778
+#24139             MARANHAO  2004-05               33.141
+#24140              PARAIBA  2004-05               34.860
+#24141           PERNAMBUCO  2004-05               32.897
+#24142                PIAUI  2004-05               35.143
+#24143  RIO GRANDE DO NORTE  2004-05               31.029
+#24144              SERGIPE  2004-05               32.625
+#24145                 ACRE  2004-05               39.328
+#24146                AMAPA  2004-05               31.840
+#24147             AMAZONAS  2004-05               31.036
+#24148                 PARA  2004-05               32.194
+#24149             RONDONIA  2004-05               35.543
+#24150              RORAIMA  2004-05               33.743
+#24151            TOCANTINS  2004-05               33.271
+
+
+
+# Converter a coluna 'DATA FINAL' para datetime
+df['DATA FINAL'] = pd.to_datetime(df['DATA FINAL'], errors='coerce')
+# Filtrar para o ano de 2012
+df_filtro3 = df[df['DATA FINAL'].dt.year == 2012]
+# Filtrar para a região 'SUL' e calcular a média de 'PREÇO MÉDIO REVENDA'
+media_preco_sul = df_filtro3[df_filtro3['REGIÃO'] == 'SUL']['PREÇO MÉDIO REVENDA'].mean()
+#print(media_preco_sul)
+#9.842052564102564
+
+# Cria a coluna mes com base  no mes da data final
+df['MES'] = df['DATA FINAL'].apply(lambda x: x.month)
+# Filtra a coluna Estado por RIO de JANEIRO
+df_rio = df[df['ESTADO'] == 'RIO DE JANEIRO']
+# Converte a coluna DATA INICIAL em datetime
+df_rio['DATA INICIAL'] = pd.to_datetime(df_rio['DATA INICIAL'])
+# Criar a nova coluna 'ANO-MES' com o formato YYYY-MM
+df_rio['ANO-MES'] = df_rio['DATA INICIAL'].dt.strftime('%Y-%m')
+#Agrupa o datafame por ano mes, PRECO MEDIO e MES
+#print(df_rio.groupby('ANO-MES')[['PREÇO MÉDIO REVENDA', 'MES']].last())
+#         PREÇO MÉDIO REVENDA  MES
+#ANO-MES
+#2004-05                1.368    6
+#2004-06                1.462    7
+#2004-07                1.461    7
+#2004-08                1.466    9
+#2004-09                1.466   10
+#...                      ...  ...
+#2020-12                3.825    1
+#2021-01                3.890    2
+#2021-02                4.356    3
+#2021-03                4.370    4
+#2021-04                4.302    5
+
+#[203 rows x 2 columns]
+
+df_month_rio = df_rio.groupby('ANO-MES')[['PREÇO MÉDIO REVENDA', 'MES']].last()
+print(df_month_rio[df_month_rio['MES'] == 12])
+#         PREÇO MÉDIO REVENDA  MES
+#ANO-MES
+#2004-11                1.614   12
+#2005-11                1.819   12
+#2005-12                1.821   12
+#2006-11                1.807   12
+#2007-11                1.811   12
+#2008-11                2.082   12
+#2009-11                1.992   12
+#2010-11                1.983   12
+#2011-11                2.009   12
+#2011-12                2.007   12
+#2012-11                2.111   12
+#2014-11                1.787   12
+#2015-11                2.107   12
+#2016-11                2.116   12
+#2016-12                2.067   12
+#2017-11                2.263   12
+#2018-11                3.085   12
+#2020-11                3.708   12
+
+print((df_month_rio[df_month_rio['MES'] == 12] / df_month_rio[df_month_rio['MES'] == 12].shift(1) - 1) * 100)
+
+#         PREÇO MÉDIO REVENDA  MES
+#ANO-MES
+#2004-11                  NaN  NaN
+#2005-11            12.701363  0.0
+#2005-12             0.109951  0.0
+#2006-11            -0.768808  0.0
+#2007-11             0.221361  0.0
+#2008-11            14.964108  0.0
+#2009-11            -4.322767  0.0
+#2010-11            -0.451807  0.0
+#2011-11             1.311145  0.0
+#2011-12            -0.099552  0.0
+#2012-11             5.181863  0.0
+#2014-11           -15.348176  0.0
+#2015-11            17.907107  0.0
+#2016-11             0.427148  0.0
+#2016-12            -2.315690  0.0
+#2017-11             9.482342  0.0
+#2018-11            36.323464  0.0
+#2020-11            20.194489  0.0

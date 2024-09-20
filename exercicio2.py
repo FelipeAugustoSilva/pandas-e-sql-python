@@ -161,7 +161,7 @@ df_rio['ANO-MES'] = df_rio['DATA INICIAL'].dt.strftime('%Y-%m')
 #[203 rows x 2 columns]
 
 df_month_rio = df_rio.groupby('ANO-MES')[['PREÇO MÉDIO REVENDA', 'MES']].last()
-print(df_month_rio[df_month_rio['MES'] == 12])
+#print(df_month_rio[df_month_rio['MES'] == 12])
 #         PREÇO MÉDIO REVENDA  MES
 #ANO-MES
 #2004-11                1.614   12
@@ -183,7 +183,7 @@ print(df_month_rio[df_month_rio['MES'] == 12])
 #2018-11                3.085   12
 #2020-11                3.708   12
 
-print((df_month_rio[df_month_rio['MES'] == 12] / df_month_rio[df_month_rio['MES'] == 12].shift(1) - 1) * 100)
+#print((df_month_rio[df_month_rio['MES'] == 12] / df_month_rio[df_month_rio['MES'] == 12].shift(1) - 1) * 100)
 
 #         PREÇO MÉDIO REVENDA  MES
 #ANO-MES
@@ -205,3 +205,71 @@ print((df_month_rio[df_month_rio['MES'] == 12] / df_month_rio[df_month_rio['MES'
 #2017-11             9.482342  0.0
 #2018-11            36.323464  0.0
 #2020-11            20.194489  0.0
+
+df_max = df_rio.groupby("ANO-MES").max()["PREÇO MÉDIO REVENDA"] #Agrupa os valores por ANO-MES e retorna o maior valor PREÇO MEDIO REVENDA
+#print(df_max)
+#2004-05    29.154
+#2004-06    29.238
+#2004-07    29.344
+#2004-08    29.363
+#2004-09    29.138
+#            ...
+#2020-12    67.210
+#2021-01    70.217
+#2021-02    71.034
+#2021-03    74.574
+#2021-04    76.847
+#Name: PREÇO MÉDIO REVENDA, Length: 203, dtype: float64
+
+df_min = df_rio.groupby("ANO-MES").min()["PREÇO MÉDIO REVENDA"] #Agrupa os valores por ANO-MES e retorna o menor valor PREÇO MEDIO REVENDA
+#print(df_min) 
+#ANO-MES
+#2004-05    1.092
+#2004-06    1.100
+#2004-07    1.102
+#2004-08    1.101
+#2004-09    1.104
+#           ...
+#2020-12    3.007
+#2021-01    3.025
+#2021-02    3.043
+#2021-03    3.091
+#2021-04    3.011
+#Name: PREÇO MÉDIO REVENDA, Length: 203, dtype: float64
+
+df_diff = pd.DataFrame() # Cria um dataframe vazio
+df_diff["abs_diff"] = df_max - df_min #Cria uma coluna abs_diff e preenche com a diferença entre df_max e df_min
+#print(df_diff)
+#         abs_diff
+#ANO-MES
+#2004-05    28.062
+#2004-06    28.138
+#2004-07    28.242
+#2004-08    28.262
+#2004-09    28.034
+#...           ...
+#2020-12    64.203
+#2021-01    67.192
+#2021-02    67.991
+#2021-03    71.483
+#2021-04    73.836
+
+#[203 rows x 1 columns]
+
+df_diff["percent_diff"] = (df_max - df_min) / df_min * 100 #Cria uma coluna percent_diff e preenche com a diferença entre df_max e df_min em percentual
+#print(df_diff)
+#         abs_diff  percent_diff
+#ANO-MES
+#2004-05    28.062   2569.780220
+#2004-06    28.138   2558.000000
+#2004-07    28.242   2562.794918
+#2004-08    28.262   2566.939146
+#2004-09    28.034   2539.311594
+#...           ...           ...
+#2020-12    64.203   2135.118058
+#2021-01    67.192   2221.223140
+#2021-02    67.991   2234.341111
+#2021-03    71.483   2312.617276
+#2021-04    73.836   2452.208569
+
+#[203 rows x 2 columns]

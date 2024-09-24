@@ -97,13 +97,138 @@ df_obesidy.set_index("Year", inplace=True) # tranformando os valores da coluna Y
 #2016     Zimbabwe  25.3 [19.1-32.0]      Female     25.3
 
 
-#df_obesidy['Sex'] = df_obesidy["Sex"].apply(lambda x: str(x))
-
-#print(df_obesidy[df_obesidy.index == 2015].groupby("Sex").mean())
 
 mean_values = df_obesidy[df_obesidy.index == 2015].groupby("Sex").mean(numeric_only=True)
-print(mean_values)
+#print(mean_values)
+#              Obesity
+#Sex
+#Both sexes  19.508377
+#Female      22.899476
+#Male        15.980628
 
 
 
 
+df_obesidy_start = df_obesidy[df_obesidy.index == 1975]
+df_obesidy_end = df_obesidy[df_obesidy.index == 2016]
+df_obesidy_start.set_index('Country', inplace=True)
+df_obesidy_end.set_index('Country', inplace=True)
+
+df_obesidy_ev = df_obesidy_end[df_obesidy_end['Sex'] == 'Both sexes']['Obesity'] - df_obesidy_start[df_obesidy_start['Sex'] == 'Both sexes']['Obesity']
+#print(df_obesidy_ev)
+#Country
+#Afghanistan                            5.0
+#Albania                               15.2
+#Algeria                               20.5
+#Andorra                               12.7
+#Angola                                 7.4
+#                                      ...
+#Venezuela (Bolivarian Republic of)    16.0
+#Viet Nam                               2.0
+#Yemen                                 14.3
+#Zambia                                 6.6
+#Zimbabwe                              11.8
+#Name: Obesity, Length: 195, dtype: float64
+
+#print(df_obesidy_ev.sort_values().dropna())
+#Country
+#Viet Nam         2.0
+#Singapore        3.1
+#Japan            3.3
+#Bangladesh       3.4
+#Timor-Leste      3.6
+#                ...
+#Cook Islands    27.9
+#Tonga           28.3
+#Kiribati        30.1
+#Niue            31.1
+#Tuvalu          33.7
+#Name: Obesity, Length: 191, dtype: float64
+
+
+#print(df_obesidy_ev.sort_values().head(5))
+#Country
+#Viet Nam       2.0
+#Singapore      3.1
+#Japan          3.3
+#Bangladesh     3.4
+#Timor-Leste    3.6
+#Name: Obesity, dtype: float64
+
+
+#print(df_obesidy_ev.sort_values().dropna().tail(5))
+#Country
+#Cook Islands    27.9
+#Tonga           28.3
+#Kiribati        30.1
+#Niue            31.1
+#Tuvalu          33.7
+#Name: Obesity, dtype: float64
+
+
+df_2015 = df_obesidy[df_obesidy.index == 2015]
+#print(df_2015[df_2015['Obesity'] == df_2015['Obesity'].max()])
+#     Country       Obesity (%)     Sex  Obesity
+#Year
+#2015   Nauru  63.1 [55.5-70.3]  Female     63.1
+
+
+df_brazil = df_obesidy[df_obesidy['Country'] == 'Brazil']
+#print(df_brazil[df_brazil['Sex'] == 'Female']['Obesity'] - df_brazil[df_brazil['Sex'] == 'Male']['Obesity'])
+#Year
+#1975    4.3
+#1976    4.4
+#1977    4.6
+#1978    4.7
+#1979    4.9
+#1980    4.9
+#1981    5.1
+#1982    5.2
+#1983    5.4
+#1984    5.5
+#1985    5.6
+#1986    5.7
+#1987    5.8
+#1988    5.9
+#1989    6.0
+#1990    6.1
+#1991    6.1
+#1992    6.3
+#1993    6.3
+#1994    6.4
+#1995    6.4
+#1996    6.5
+#1997    6.6
+#1998    6.7
+#1999    6.8
+#2000    6.8
+#2001    6.8
+#2002    6.8
+#2003    6.9
+#2004    6.9
+#2005    6.9
+#2006    6.9
+#2007    7.0
+#2008    6.9
+#2009    7.0
+#2010    7.0
+#2011    6.9
+#2012    6.9
+#2013    6.9
+#2014    6.9
+#2015    6.9
+#2016    6.9
+#Name: Obesity, dtype: float64
+
+
+
+
+difference = df_brazil[df_brazil['Sex'] == 'Female']['Obesity'] - df_brazil[df_brazil['Sex'] == 'Male']['Obesity']
+difference.plot() # Gera um grafico no notebook
+
+
+
+
+df_both = df_obesidy[df_obesidy['Sex'] == 'Both sexes']
+df_final = df_both.groupby('Year')['Obesity'].mean()
+df_final.plot() #Gera um grafico no notebook

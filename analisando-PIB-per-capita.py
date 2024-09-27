@@ -72,3 +72,66 @@ float(gdp_puro[' GDP_pp '].iloc[0].split()[0]) #agora goi retirado os espaços e
 gdp_puro['gdp'] = gdp_puro[' GDP_pp '].apply(lambda x: float(x.split()[0].replace(',', ''))) #removendo a virgula dos valores com virgula da coluna GDO_pp
 
 del gdp_puro[' GDP_pp ']
+
+
+#print(gdp_puro.groupby('Country')['Year'].min())
+#Country
+#Afghanistan    1901
+#Albania        1901
+#Algeria        1901
+#Andorra        1901
+#Angola         1901
+#               ... 
+#Venezuela      1901
+#Vietnam        1901
+#Yemen, Rep.    1901
+#Zambia         1901
+#Zimbabwe       1901
+#Name: Year, Length: 193, dtype: int64
+
+
+#print(gdp_puro.groupby('Country')['Year'].min().value_counts())
+#Year
+#1901    192
+#1991      1
+#Name: count, dtype: int64
+
+
+#print(gdp_puro.groupby('Country')['Year'].min()[gdp_puro.groupby('Country')['Year'].min() == 1991])
+#Country
+#Kosovo    1991
+#Name: Year, dtype: int64
+
+
+#print(gdp_puro[gdp_puro['Year'] < 2000].max())
+#Country              Zimbabwe
+#Region     Sub-Saharan Africa
+#Year                     1996
+#gdp                  118681.3
+
+df_gdp_start = gdp_puro[gdp_puro['Year'] == 1901]
+df_gdp_end = gdp_puro[gdp_puro['Year'] == 1996]
+
+#print((df_gdp_end.groupby('Region')['gdp'].mean() / df_gdp_start.groupby('Region')['gdp'].mean() - 1) * 100)
+#Region
+#Asia                                             711.761516
+#Australia and Oceania                            396.075383
+#Central America and the Caribbean                406.426789
+#Europe                                           594.046167
+#Middle East, North Africa, and Greater Arabia    857.215950
+#North America                                    589.760175
+#South America                                    312.123735
+#Sub-Saharan Africa                               248.633780
+#Name: gdp, dtype: float64
+
+#print(((df_gdp_end.groupby('Region')['gdp'].mean() / df_gdp_start.groupby('Region')['gdp'].mean() - 1) * 100).sort_values())
+#Region
+#Sub-Saharan Africa                               248.633780
+#South America                                    312.123735
+#Australia and Oceania                            396.075383
+#Central America and the Caribbean                406.426789
+#North America                                    589.760175
+#Europe                                           594.046167
+#Asia                                             711.761516
+#Middle East, North Africa, and Greater Arabia    857.215950
+#Name: gdp, dtype: float64

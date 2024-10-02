@@ -208,3 +208,83 @@ df_years_off = df_years_off.loc[df_years_off].index
 #       1992, 1993, 1994, 1995, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
 #       2007, 2008, 2009, 2010],
 #      dtype='int64', name='Year')
+
+
+#print(gdp_puro)
+#          Country                                         Region  Year     gdp
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901  613.99
+#1     Afghanistan  Middle East, North Africa, and Greater Arabia  1906  624.04
+#2     Afghanistan  Middle East, North Africa, and Greater Arabia  1911  634.25
+#3     Afghanistan  Middle East, North Africa, and Greater Arabia  1916  647.28
+#4     Afghanistan  Middle East, North Africa, and Greater Arabia  1921  662.40
+#...           ...                                            ...   ...     ...
+#4414     Zimbabwe                             Sub-Saharan Africa  1991  782.09
+#4415     Zimbabwe                             Sub-Saharan Africa  1996  781.50
+#4416     Zimbabwe                             Sub-Saharan Africa  2001  719.96
+#4417     Zimbabwe                             Sub-Saharan Africa  2006  520.17
+#4418     Zimbabwe                             Sub-Saharan Africa  2011  526.3
+
+gdp_puro = gdp_puro.sort_values(['Country', 'Year'])
+#print(gdp_puro)
+#          Country                                         Region  Year     gdp
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901  613.99
+#1     Afghanistan  Middle East, North Africa, and Greater Arabia  1906  624.04
+#2     Afghanistan  Middle East, North Africa, and Greater Arabia  1911  634.25
+#3     Afghanistan  Middle East, North Africa, and Greater Arabia  1916  647.28
+#4     Afghanistan  Middle East, North Africa, and Greater Arabia  1921  662.40
+#...           ...                                            ...   ...     ...
+#4414     Zimbabwe                             Sub-Saharan Africa  1991  782.09
+#4415     Zimbabwe                             Sub-Saharan Africa  1996  781.50
+#4416     Zimbabwe                             Sub-Saharan Africa  2001  719.96
+#4417     Zimbabwe                             Sub-Saharan Africa  2006  520.17
+#4418     Zimbabwe                             Sub-Saharan Africa  2011  526.33
+
+gdp_puro['delta_gdp'] = gdp_puro['gdp'] - gdp_puro['gdp'].shift(1)
+gdp_puro['delta_year'] = gdp_puro['Year'] - gdp_puro['Year'].shift(1)
+#print(gdp_puro)
+#          Country                                         Region  Year     gdp  delta_gdp  delta_year
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901  613.99        NaN         NaN
+#1     Afghanistan  Middle East, North Africa, and Greater Arabia  1906  624.04      10.05         5.0
+#2     Afghanistan  Middle East, North Africa, and Greater Arabia  1911  634.25      10.21         5.0
+#3     Afghanistan  Middle East, North Africa, and Greater Arabia  1916  647.28      13.03         5.0
+#4     Afghanistan  Middle East, North Africa, and Greater Arabia  1921  662.40      15.12         5.0
+#...           ...                                            ...   ...     ...        ...         ...
+#4414     Zimbabwe                             Sub-Saharan Africa  1991  782.09      39.79         5.0
+#4415     Zimbabwe                             Sub-Saharan Africa  1996  781.50      -0.59         5.0
+#4416     Zimbabwe                             Sub-Saharan Africa  2001  719.96     -61.54         5.0
+#4417     Zimbabwe                             Sub-Saharan Africa  2006  520.17    -199.79         5.0
+#4418     Zimbabwe                             Sub-Saharan Africa  2011  526.33       6.16         5.0
+
+gdp_puro['gdp_year'] = gdp_puro['delta_gdp'] / gdp_puro['delta_year']
+#print(gdp_puro)
+#          Country                                         Region  Year     gdp  delta_gdp  delta_year  gdp_year
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901  613.99        NaN         NaN       NaN
+#1     Afghanistan  Middle East, North Africa, and Greater Arabia  1906  624.04      10.05         5.0     2.010
+#2     Afghanistan  Middle East, North Africa, and Greater Arabia  1911  634.25      10.21         5.0     2.042
+#3     Afghanistan  Middle East, North Africa, and Greater Arabia  1916  647.28      13.03         5.0     2.606
+#4     Afghanistan  Middle East, North Africa, and Greater Arabia  1921  662.40      15.12         5.0     3.024
+#...           ...                                            ...   ...     ...        ...         ...       ...
+#4414     Zimbabwe                             Sub-Saharan Africa  1991  782.09      39.79         5.0     7.958
+#4415     Zimbabwe                             Sub-Saharan Africa  1996  781.50      -0.59         5.0    -0.118
+#4416     Zimbabwe                             Sub-Saharan Africa  2001  719.96     -61.54         5.0   -12.308
+#4417     Zimbabwe                             Sub-Saharan Africa  2006  520.17    -199.79         5.0   -39.958
+#4418     Zimbabwe                             Sub-Saharan Africa  2011  526.33       6.16         5.0     1.232
+
+#[4419 rows x 7 columns]
+
+gdp_puro['gdp_year'] = (gdp_puro['delta_gdp'] / gdp_puro['delta_year']).shift(-1)
+#print(gdp_puro)
+#          Country                                         Region  Year     gdp  delta_gdp  delta_year  gdp_year
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901  613.99        NaN         NaN     2.010
+#1     Afghanistan  Middle East, North Africa, and Greater Arabia  1906  624.04      10.05         5.0     2.042
+#2     Afghanistan  Middle East, North Africa, and Greater Arabia  1911  634.25      10.21         5.0     2.606
+#3     Afghanistan  Middle East, North Africa, and Greater Arabia  1916  647.28      13.03         5.0     3.024
+#4     Afghanistan  Middle East, North Africa, and Greater Arabia  1921  662.40      15.12         5.0     3.094
+#...           ...                                            ...   ...     ...        ...         ...       ...
+#4414     Zimbabwe                             Sub-Saharan Africa  1991  782.09      39.79         5.0    -0.118
+#4415     Zimbabwe                             Sub-Saharan Africa  1996  781.50      -0.59         5.0   -12.308
+#4416     Zimbabwe                             Sub-Saharan Africa  2001  719.96     -61.54         5.0   -39.958
+#4417     Zimbabwe                             Sub-Saharan Africa  2006  520.17    -199.79         5.0     1.232
+#4418     Zimbabwe                             Sub-Saharan Africa  2011  526.33       6.16         5.0       NaN
+
+#[4419 rows x 7 columns]

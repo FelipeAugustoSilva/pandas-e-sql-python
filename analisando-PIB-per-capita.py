@@ -288,3 +288,38 @@ gdp_puro['gdp_year'] = (gdp_puro['delta_gdp'] / gdp_puro['delta_year']).shift(-1
 #4418     Zimbabwe                             Sub-Saharan Africa  2011  526.33       6.16         5.0       NaN
 
 #[4419 rows x 7 columns]
+
+gdp_puro['next_year'] = gdp_puro['Year'].shift(-1)
+del gdp_puro['delta_gdp'], gdp_puro['delta_year']
+#print(gdp_puro)
+#          Country                                         Region  Year     gdp  gdp_year  next_year
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901  613.99     2.010     1906.0
+#1     Afghanistan  Middle East, North Africa, and Greater Arabia  1906  624.04     2.042     1911.0
+#2     Afghanistan  Middle East, North Africa, and Greater Arabia  1911  634.25     2.606     1916.0
+#3     Afghanistan  Middle East, North Africa, and Greater Arabia  1916  647.28     3.024     1921.0
+#4     Afghanistan  Middle East, North Africa, and Greater Arabia  1921  662.40     3.094     1926.0
+#...           ...                                            ...   ...     ...       ...        ...
+#4414     Zimbabwe                             Sub-Saharan Africa  1991  782.09    -0.118     1996.0
+#4415     Zimbabwe                             Sub-Saharan Africa  1996  781.50   -12.308     2001.0
+#4416     Zimbabwe                             Sub-Saharan Africa  2001  719.96   -39.958     2006.0
+#4417     Zimbabwe                             Sub-Saharan Africa  2006  520.17     1.232     2011.0
+#4418     Zimbabwe                             Sub-Saharan Africa  2011  526.33       NaN        NaN
+#
+#[4419 rows x 6 columns]
+
+new_gdp = pd.DataFrame()
+for idx, row in gdp_puro.iterrows():
+    if row['Year'] == 2011:
+        continue
+    
+    years_to_add = df_years_off[(df_years_off < row['next_year']) & (df_years_off > row ['Year'])]
+    
+    for new_year in years_to_add:
+        add_row = row.copy()
+        add_row['gdp'] = (new_year - add_row['Year']) * add_row['gdp_year'] + add_row['gdp']
+        add_row['Year'] = new_year
+        add_row['kind'] = 'estimated'
+        new_gdp = pd.concat([new_gdp, add_row.to_frame().transpose()])
+
+
+print(new_gdp)

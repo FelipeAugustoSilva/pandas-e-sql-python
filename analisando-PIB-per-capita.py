@@ -322,4 +322,60 @@ for idx, row in gdp_puro.iterrows():
         new_gdp = pd.concat([new_gdp, add_row.to_frame().transpose()])
 
 
-print(new_gdp)
+#print(new_gdp)
+#          Country                                         Region  Year      gdp gdp_year next_year       kind
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1902    616.0     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1903   618.01     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1904   620.02     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1905   622.03     2.01    1906.0  estimated
+#1     Afghanistan  Middle East, North Africa, and Greater Arabia  1907  626.082    2.042    1911.0  estimated
+#...           ...                                            ...   ...      ...      ...       ...        ...
+#4416     Zimbabwe                             Sub-Saharan Africa  2005  560.128  -39.958    2006.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2007  521.402    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2008  522.634    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2009  523.866    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2010  525.098    1.232    2011.0  estimated
+
+#[16904 rows x 7 columns]
+
+gdp_puro = pd.concat([gdp_puro, new_gdp])
+gdp_puro.sort_values(['Country', 'Year'], inplace=True)
+#print(gdp_puro)
+#          Country                                         Region  Year      gdp gdp_year next_year       kind
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901   613.99     2.01    1906.0        NaN
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1902    616.0     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1903   618.01     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1904   620.02     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1905   622.03     2.01    1906.0  estimated
+#...           ...                                            ...   ...      ...      ...       ...        ...
+#4417     Zimbabwe                             Sub-Saharan Africa  2007  521.402    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2008  522.634    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2009  523.866    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2010  525.098    1.232    2011.0  estimated
+#4418     Zimbabwe                             Sub-Saharan Africa  2011   526.33      NaN       NaN        NaN
+
+#[21323 rows x 7 columns]
+
+gdp_puro['kind'].fillna('real', inplace=True)
+#print(gdp_puro)
+#          Country                                         Region  Year      gdp gdp_year next_year       kind
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1901   613.99     2.01    1906.0       real
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1902    616.0     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1903   618.01     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1904   620.02     2.01    1906.0  estimated
+#0     Afghanistan  Middle East, North Africa, and Greater Arabia  1905   622.03     2.01    1906.0  estimated
+#...           ...                                            ...   ...      ...      ...       ...        ...
+#4417     Zimbabwe                             Sub-Saharan Africa  2007  521.402    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2008  522.634    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2009  523.866    1.232    2011.0  estimated
+#4417     Zimbabwe                             Sub-Saharan Africa  2010  525.098    1.232    2011.0  estimated
+#4418     Zimbabwe                             Sub-Saharan Africa  2011   526.33      NaN       NaN       real
+
+#[21323 rows x 7 columns]
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(20, 5))
+
+country = "Brazil"
+gdp_puro[(gdp_puro['kind'] == 'real') & (gdp_puro['Country'] == country)].plot(kind='scatter', y='gdp', x='Year', ax=ax)
+gdp_puro[(gdp_puro['kind'] == 'estimated') & (gdp_puro['Country'] == country)].plot(kind='scatter', y='gdp', x='Year', ax=ax, color='orange')
